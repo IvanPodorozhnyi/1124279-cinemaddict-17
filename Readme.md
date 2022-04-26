@@ -1,7 +1,7 @@
 # Проект «Киноман»
 
 * Студент: [Ivan Podorozhnyi](https://up.htmlacademy.ru/ecmascript/17/user/1124279).
-* Наставник: `Неизвестно`.
+* Наставник: [Михаил Кислый](https://htmlacademy.ru/profile/smart-grizzly).
 
 ---
 
