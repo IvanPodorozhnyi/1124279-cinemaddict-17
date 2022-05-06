@@ -8,9 +8,7 @@ import FilmModel from './model/film-model.js';
 
 const filmModel = new FilmModel();
 
-// console.log(new FilmModel().getFilms());
 
 render(new ProfileRatingView, siteHeader);
 
 boardPresenter.init(siteMainElement, filmModel);
-

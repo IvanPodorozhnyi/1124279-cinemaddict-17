@@ -8,11 +8,11 @@ import MainNavigationView from '../view/main-navigation-view.js';
 import PopupView from '../view/popup-view.js';
 import ShowMoreButtonView from '../view/show-more-button-view.js';
 import FilmListView from '../view/film-list-view.js';
-import FilmContainerView from '../view/film-list-container-view.js';
+import FilmListContainerView from '../view/film-list-container-view.js';
 
 
 export default class BoardPresenter {
-  filmContainer = new FilmContainerView();
+  filmContainer = new FilmListContainerView();
   filmList = new FilmListView();
   filmWrapper = new FilmView();
 

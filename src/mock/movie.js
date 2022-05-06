@@ -66,7 +66,6 @@ const descriptions = [
   'Oscar-winning film, a war drama about two young people, from the creators of timeless classic "Nu, Pogodi!" and "Alice in Wonderland", with the best fight scenes since Bruce Lee. '
 ];
 
-
 const generateRandomString = (data, max) => {
 
   let str  = '';
@@ -90,9 +89,7 @@ const generatePoster = () => {
   return `images/posters/${postersNames[getRandomInteger(0, postersNames.length - 1)]}`;
 };
 
-
 const generateRandomData = (data) => data[getRandomInteger(0, data.length - 1)];
-
 
 const generateComments = () => {
   const arr = [];
@@ -102,7 +99,6 @@ const generateComments = () => {
   return arr;
 
 };
-
 
 const generateRandomArr = (data, max) => {
   const arr = [];
@@ -153,7 +149,6 @@ export const generateMovie = () => ({
 });
 
 const smiles = ['smile', 'sleeping', 'puke', 'angry'];
-
 
 export const generateComment = () => ({
   id: getRandomInteger(QUANTITY_COMENTS.min, QUANTITY_COMENTS.max),
