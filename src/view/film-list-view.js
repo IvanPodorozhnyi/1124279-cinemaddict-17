@@ -1,12 +1,16 @@
+
+
 import {createElement} from '../render.js';
 
-const createFilmWrapper = () => `<section class="films">
+const createFilmList = () => `<section class="films-list">
+<h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
+
 </section>`;
 
 
-export default class FilmView {
+export default class FilmListView {
   getTemplate() {
-    return createFilmWrapper();
+    return createFilmList();
   }
 
 
