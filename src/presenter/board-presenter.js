@@ -12,44 +12,83 @@ import FilmListContainerView from '../view/film-list-container-view.js';
 
 
 export default class BoardPresenter {
-  filmContainer = new FilmListContainerView();
-  filmList = new FilmListView();
-  filmWrapper = new FilmView();
 
+  #boardContainer = null;
+  #filmModel = null;
+
+
+
+  #filmContainer = new FilmListContainerView();
+  #filmList = new FilmListView();
+  #filmWrapper = new FilmView();
+
+  #boardFilms = [];
+  #filmComments = [];
+
+  #body = document.body;
 
   init = (boardContainer, filmModel) => {
-    this.boardContainer = boardContainer;
-    this.filmModel = filmModel;
-    this.boardFilms = [...this.filmModel.getFilms()];
-    this.filmComments = [...this.filmModel.getComments()];
+    this.#boardContainer = boardContainer;
+    this.#filmModel = filmModel;
+    this.#boardFilms = [...this.#filmModel.films];
+    this.#filmComments = [...this.#filmModel.filmComments];
 
-    render(new MainNavigationView(), this.boardContainer);
-    render(new FilterView(), this.boardContainer);
-    render(this.filmWrapper, this.boardContainer);
-    render(this.filmList, this.filmWrapper.getElement());
-    render(this.filmContainer, this.filmList.getElement());
+    render(new MainNavigationView(), this.#boardContainer);
+    render(new FilterView(), this.#boardContainer);
+    render(this.#filmWrapper, this.#boardContainer);
+    render(this.#filmList, this.#filmWrapper.element);
+    render(this.#filmContainer, this.#filmList.element);
 
-    for (let i = 0; i < this.boardFilms.length; i++) {
-      render(new FilmCardView(this.boardFilms[i]), this.filmContainer.getElement());
-
+    for (let i = 0; i < this.#boardFilms.length; i++) {
+      this.#renderCardFilm(this.#boardFilms[i]);
     }
-    render(new ShowMoreButtonView, this.filmContainer.getElement());
+    render(new ShowMoreButtonView(), this.#filmContainer.element);
+  };
 
-    const cardsFilms = document.querySelectorAll('.film-card');
 
-    cardsFilms.forEach((element) => {
-      element.addEventListener('click', (evt) => {
-        const cardId = evt.target.getAttribute('data-id');
-        this.boardFilms.forEach((film) => {
-          if (Number(film.id) === Number(cardId)) {
-            render(new PopupView(film, this.filmComments), this.boardContainer);
-            document.querySelector('.film-details__close-btn').addEventListener('click', () => {
-              document.querySelector('.film-details').remove();
-            });
-          }
-        });
+  #openPopup = (popup) => {
+    document.addEventListener('keydown', this.#onEscKeyDown);
+    if (this.#body.querySelector('.film-details')) {
+      this.#closePopup();
+      this.#body.appendChild(popup.element);
+    }
+    this.#body.appendChild(popup.element);
+    this.#body.classList.add('hide-overflow');
+  };
+
+  #closePopup = () => {
+    this.#body.querySelector('.film-details').remove();
+    this.#body.classList.remove('hide-overflow');
+  };
+
+  #onEscKeyDown = (evt) => {
+    if (evt.key === 'Escape' || evt.key === 'Esc') {
+      evt.preventDefault();
+      this.#closePopup();
+      document.removeEventListener('keydown', this.#onEscKeyDown);
+    }
+  };
+
+  #renderPopup = (card) => {
+    card.element.querySelector('.film-card__link').addEventListener('click', (evt) => {
+      const cardId = evt.target.getAttribute('data-id');
+      this.#boardFilms.forEach((item) => {
+        if (Number(item.id) === Number(cardId)) {
+          const popup = new PopupView(item, this.#filmComments);
+          this.#openPopup(popup);
+          popup.element.querySelector('.film-details__close-btn').addEventListener('click', () => {
+            this.#closePopup(popup);
+          });
+        }
       });
     });
   };
+
+  #renderCardFilm = (film) => {
+    const card = new FilmCardView(film);
+    render(card, this.#filmContainer.element);
+    this.#renderPopup(card);
+  };
+
 }
 
