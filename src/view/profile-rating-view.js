@@ -7,21 +7,24 @@ const createProfileRating = () => ` <section class="header__profile profile">
 
 
 export default class ProfileRatingView {
-  getTemplate() {
+
+  #element = null;
+
+  get template() {
     return createProfileRating();
   }
 
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 
 }

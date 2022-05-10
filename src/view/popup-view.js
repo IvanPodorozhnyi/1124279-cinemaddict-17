@@ -6,6 +6,7 @@ import {humanizeDate, getTimeFromMins, formatingDate} from '../until.js';
 
 
 const commentDateFormat = formatingDate();
+
 const createPopup = (film, filmComments) => {
   const getCommentsFilm = () => {
     const arr = [];
@@ -167,25 +168,30 @@ const createPopup = (film, filmComments) => {
 </section>`;
 };
 export default class PopupView {
+
+  #film = null;
+  #filmComments = null;
+  #element = null;
+
   constructor(film, filmComments) {
-    this.film = film;
-    this.filmComments = filmComments;
+    this.#film = film;
+    this.#filmComments = filmComments;
   }
 
 
-  getTemplate() {
-    return createPopup(this.film, this.filmComments);
+  get template() {
+    return createPopup(this.#film, this.#filmComments);
   }
 
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
