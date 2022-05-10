@@ -6,6 +6,7 @@ export default class FilmModel {
   get filmComments () {
     return this.#filmComments;
   }
+
   get films () {
     return this.#films;
   }

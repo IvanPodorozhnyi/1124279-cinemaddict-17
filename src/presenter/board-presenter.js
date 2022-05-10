@@ -17,7 +17,6 @@ export default class BoardPresenter {
   #filmModel = null;
 
 
-
   #filmContainer = new FilmListContainerView();
   #filmList = new FilmListView();
   #filmWrapper = new FilmView();

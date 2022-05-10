@@ -40,15 +40,12 @@ export default class FilmCardView {
     this.#film = film;
   }
 
-  get template() {
+  get template () {
     return createFilmCard(this.#film);
   }
 
-  get url () {
-    return `<a class="film-card__link">`
-  }
 
-  get element() {
+  get element () {
     if (!this.#element) {
       this.#element = createElement(this.template);
     }
