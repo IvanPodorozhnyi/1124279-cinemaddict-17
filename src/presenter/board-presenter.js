@@ -9,39 +9,66 @@ import PopupView from '../view/popup-view.js';
 import ShowMoreButtonView from '../view/show-more-button-view.js';
 import FilmListView from '../view/film-list-view.js';
 import FilmListContainerView from '../view/film-list-container-view.js';
+import NoMoviesInBaseView from '../view/no-movies-in-base-view.js';
 
 
+const CARD_COUNT_PER_STEP = 5;
 export default class BoardPresenter {
+  constructor (boardContainer, filmModel) {
+    this.#boardContainer = boardContainer;
+    this.#filmModel = filmModel;
+  }
 
   #boardContainer = null;
   #filmModel = null;
-
-
   #filmContainer = new FilmListContainerView();
   #filmList = new FilmListView();
   #filmWrapper = new FilmView();
-
   #boardFilms = [];
+  #showMoreButtonComponent = new ShowMoreButtonView();
   #filmComments = [];
-
+  #renderFilmCount = CARD_COUNT_PER_STEP;
   #body = document.body;
 
-  init = (boardContainer, filmModel) => {
-    this.#boardContainer = boardContainer;
-    this.#filmModel = filmModel;
+  init = () => {
     this.#boardFilms = [...this.#filmModel.films];
     this.#filmComments = [...this.#filmModel.filmComments];
+    this.#renderFilmCard();
+  };
 
+
+  #renderFilmCard = () => {
     render(new MainNavigationView(), this.#boardContainer);
     render(new FilterView(), this.#boardContainer);
     render(this.#filmWrapper, this.#boardContainer);
-    render(this.#filmList, this.#filmWrapper.element);
-    render(this.#filmContainer, this.#filmList.element);
+    if (this.#boardFilms.every((film) => film.isArchive)) {
+      render(new NoMoviesInBaseView(), this.#filmWrapper.element);
+    } else {
+      render(this.#filmList, this.#filmWrapper.element);
+      render(this.#filmContainer, this.#filmList.element);
 
-    for (let i = 0; i < this.#boardFilms.length; i++) {
-      this.#renderCardFilm(this.#boardFilms[i]);
+      for (let i = 0; i < Math.min(this.#boardFilms.length, CARD_COUNT_PER_STEP); i++) {
+        this.#renderCardFilm(this.#boardFilms[i]);
+      }
+      if (this.#boardFilms.length > CARD_COUNT_PER_STEP) {
+        render(this.#showMoreButtonComponent, this.#filmList.element);
+        this.#showMoreButtonComponent.element.addEventListener('click', this.#clickShowMoreButton);
+      }
     }
-    render(new ShowMoreButtonView(), this.#filmContainer.element);
+  };
+
+  #clickShowMoreButton = (evt) => {
+    evt.preventDefault();
+    this.#boardFilms
+      .slice(this.#renderFilmCount, this.#renderFilmCount + CARD_COUNT_PER_STEP)
+      .forEach((film) => this.#renderCardFilm(film));
+
+    this.#renderFilmCount+=CARD_COUNT_PER_STEP;
+
+    if (this.#renderFilmCount >= this.#boardFilms.length) {
+      this.#showMoreButtonComponent.element.remove();
+      this.#showMoreButtonComponent.removeElement();
+    }
   };
 
 
