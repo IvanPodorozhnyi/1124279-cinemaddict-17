@@ -12,14 +12,13 @@ import FilmListContainerView from '../view/film-list-container-view.js';
 import NoMoviesInBaseView from '../view/no-movies-in-base-view.js';
 
 
-
-
 const CARD_COUNT_PER_STEP = 5;
 export default class BoardPresenter {
   constructor (boardContainer, filmModel) {
     this.#boardContainer = boardContainer;
     this.#filmModel = filmModel;
   }
+
   #boardContainer = null;
   #filmModel = null;
   #filmContainer = new FilmListContainerView();
@@ -37,7 +36,7 @@ export default class BoardPresenter {
     this.#renderFilmCard();
   };
 
-  
+
   #renderFilmCard = () => {
     render(new MainNavigationView(), this.#boardContainer);
     render(new FilterView(), this.#boardContainer);
@@ -56,7 +55,7 @@ export default class BoardPresenter {
         this.#showMoreButtonComponent.element.addEventListener('click', this.#clickShowMoreButton);
       }
     }
-  }
+  };
 
   #clickShowMoreButton = (evt) => {
     evt.preventDefault();
