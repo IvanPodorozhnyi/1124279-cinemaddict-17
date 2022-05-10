@@ -8,8 +8,8 @@ const siteHeader = document.querySelector('.header');
 
 
 const filmModel = new FilmModel();
-const boardPresenter = new BoardPresenter();
+const boardPresenter = new BoardPresenter(siteMainElement, filmModel);
 
 render(new ProfileRatingView, siteHeader);
 
-boardPresenter.init(siteMainElement, filmModel);
+boardPresenter.init();
