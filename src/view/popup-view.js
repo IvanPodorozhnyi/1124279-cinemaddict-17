@@ -1,7 +1,5 @@
-import {
-  createElement
-} from '../render.js';
 
+import AbstractView from '../framework/view/abstract-view.js';
 import {humanizeDate, getTimeFromMins, formatingDate} from '../until.js';
 
 
@@ -167,31 +165,28 @@ const createPopup = (film, filmComments) => {
 </form>
 </section>`;
 };
-export default class PopupView {
+export default class PopupView extends AbstractView{
 
   #film = null;
   #filmComments = null;
-  #element = null;
+
 
   constructor(film, filmComments) {
+    super();
     this.#film = film;
     this.#filmComments = filmComments;
   }
 
+  setClickHandler = (callback) => {
+    this._callback.click = callback;
+    this.element.querySelector('.film-details__close-btn').addEventListener('click', this.#closeClickButtonHandler);
+  };
+
+  #closeClickButtonHandler = (evt) => {
+    this._callback.click(evt);
+  };
 
   get template() {
     return createPopup(this.#film, this.#filmComments);
-  }
-
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

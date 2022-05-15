@@ -1,8 +1,7 @@
-import {
-  createElement
-} from '../render.js';
 
+import AbstractView from '../framework/view/abstract-view.js';
 import {getTimeFromMins, formatingDate, humanizeDate} from '../until.js';
+
 const formatDateFilm = formatingDate();
 
 const createFilmCard = (film) => {
@@ -32,29 +31,28 @@ const createFilmCard = (film) => {
 };
 
 
-export default class FilmCardView {
-  #element = null;
+export default class FilmCardView extends AbstractView{
   #film = null;
 
   constructor(film) {
+    super();
     this.#film = film;
+
   }
+
+
+  setClickHandler = (callback) => {
+    this._callback.click = callback;
+    this.element.addEventListener('click', this.#openClickHandler);
+  };
+
+  #openClickHandler = (evt) => {
+    this._callback.click(evt);
+  };
 
   get template () {
     return createFilmCard(this.#film);
   }
 
-
-  get element () {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
-  }
 
 }
